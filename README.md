@@ -1,4 +1,4 @@
-#Riot League Bot (WIP)
+# Riot League Bot (WIP)
 
 Quick Installation:
 1. Clone the repo 
