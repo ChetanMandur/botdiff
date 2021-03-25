@@ -27,3 +27,4 @@ Make sure you have Python 3.6+ and virtualenv (`pip install virtualenv`)
 
 ### Extra Git Commands:
 1. `git checkout <branch name>` - Swaps to a branch (doesn't create one)
+2. `git fetch` - Notes any differences between local and origin
