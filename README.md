@@ -1,6 +1,7 @@
 # Riot League Bot (WIP)
 
 ## Quick Installation:
+Make sure you have Python 3.6+ and virtualenv (`pip install virtualenv`)
 1. Clone the repo 
 2. Go into the newly cloned repo using a CLI
 3. Create a python virtual environment using `python3 -m virtualenv env`
@@ -8,7 +9,7 @@
 5. Finally, install the dependencies by using `pip install -r requirements.txt`
 
 
-## Simple Git Commands:
+## Common Git Commands:
 
 ### Pushing code:
 1. `git checkout -b "<branch name>"` - Creates a branch from your current branch
