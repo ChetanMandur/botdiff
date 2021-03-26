@@ -11,11 +11,13 @@ Make sure you have Python 3.6+ and virtualenv (`pip install virtualenv`)
 
 ## Setting up Token (WIP)
 With this project, API tokens are needed to communicate with both Discord API and Riot API.  
-To handle these tokens, we store the files in a .txt file (is coved by .gitignore)  
-1. `disc_token.txt` - This is where the Discord API tokens will be stored
-2. `riot_token.txt` - This is where the Riot API tokens will be stored  
+To handle these tokens, we store the files in a `.env` file (is coved by .gitignore).
+Here are the token names we use: 
+1. `DISCORD_TOKEN` - This is where the Discord API token will be stored
+2. `DISCORD_GUID` - This is where the Discord GUID will be stored
+3. `RIOT_TOKEN` - This is where the Riot API token will be stored  
 
-You will need to create these files yourself and paste your own tokens.
+You will need to create this file yourself and paste your own tokens.
 
 
 ## Common Git Commands:
@@ -43,3 +45,4 @@ This project could not be possible without the help of opensource projects.
 Here's the main projects that we use:
 1. [Discord.py](https://github.com/Rapptz/discord.py) - The Python wrapper for Discord API
 2. [Riot Watcher](https://github.com/pseudonym117/Riot-Watcher) - The Python wrapper for Riot API
+3. [python-dotenv](https://github.com/theskumar/python-dotenv) - Handles the tokens
