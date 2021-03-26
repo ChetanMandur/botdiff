@@ -51,6 +51,7 @@ async def <name>(ctx):
 ```
 2. Place `<name>_command()` in `functions/<name>.py`
 3. Import this file into `main.py` by using `from functions.<name> import <name>_command`
+4. Test the function/bot by running `python3 main.py`
 
 ### **Other Notes**
 Use `snake_case`! :) 
