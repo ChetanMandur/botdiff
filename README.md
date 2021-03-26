@@ -8,8 +8,20 @@ Make sure you have Python 3.6+ and virtualenv (`pip install virtualenv`)
 4. Load the virtual environment by using `source env/bin/activate` (for Windows mans, use `C:\<path_to_riotleaguebot>\env\Scripts\activate.bat`)
 5. Finally, install the dependencies by using `pip install -r requirements.txt`
 
+## Getting Tokens/Setup
 
-## Setting up Token (WIP)
+### Discord Bot
+
+Setting up a Discord bot is important when testing features.  
+For more information, go check out the [offical Discord dev docs](https://discord.com/developers/docs/intro)
+
+### Riot API/Tokens
+
+You will need to get your own API tokens from Riot. These dev tokens refresh every 24 hours.  
+To get your own token, go to [Riot's dev pages](https://developer.riotgames.com/)
+
+
+## Setting up Token
 With this project, API tokens are needed to communicate with both Discord API and Riot API.  
 To handle these tokens, we store the files in a `.env` file (is coved by .gitignore).
 Here are the token names we use: 
