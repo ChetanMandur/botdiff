@@ -12,7 +12,7 @@ Make sure you have Python 3.6+ and virtualenv (`pip install virtualenv`)
 ## Setting up Token (WIP)
 With this project, API tokens are needed to communicate with both Discord API and Riot API.  
 To handle these tokens, we store the files in a .txt file (is coved by .gitignore)  
-1. `dis_token.txt` - This is where the Discord API tokens will be stored
+1. `disc_token.txt` - This is where the Discord API tokens will be stored
 2. `riot_token.txt` - This is where the Riot API tokens will be stored  
 
 You will need to create these files yourself and paste your own tokens.

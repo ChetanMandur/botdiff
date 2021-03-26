@@ -134,5 +134,5 @@ dmypy.json
 .vscode/
 
 #Token
-dis_token.txt
+disc_token.txt
 riot_token.txt
