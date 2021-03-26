@@ -19,6 +19,19 @@ Here are the token names we use:
 
 You will need to create this file yourself and paste your own tokens.
 
+## Creating Functions
+With the structure of this repo, we want to make sure logic isn't bloating `main.py`.  
+To do this, we are following a file structure that puts logic away in another file.  
+This logic is then called when running the command.  
+To follow this structure, do the following:
+1. In `main.py` create an async function with the following format:
+``` 
+@bot.command()
+async def <name>(ctx):
+    await ctx.send(<name>_command())
+```
+2. Place `<name>_command()` in `functions/<name>.py`
+3. Import this file into `main.py` by using `from functions.<name> import <name>_command`
 
 ## Common Git Commands:
 
