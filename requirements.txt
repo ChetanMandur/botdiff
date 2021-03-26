@@ -25,3 +25,4 @@ typing-extensions==3.7.4.3
 urllib3==1.26.4
 wrapt==1.12.1
 yarl==1.6.3
+python-dotenv==0.15.0
