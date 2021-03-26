@@ -37,3 +37,9 @@ You will need to create these files yourself and paste your own tokens.
 ### Extra Git Commands:
 1. `git checkout <branch name>` - Swaps to a branch (doesn't create one)
 2. `git fetch` - Notes any differences between local and origin
+
+## Open Source Projects we use:
+This project could not be possible without the help of opensource projects.  
+Here's the main projects that we use:
+1. [Discord.py](https://github.com/Rapptz/discord.py) - The Python wrapper for Discord API
+2. [Riot Watcher](https://github.com/pseudonym117/Riot-Watcher) - The Python wrapper for Riot API
