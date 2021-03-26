@@ -29,7 +29,7 @@ Here are the token names we use:
 2. `DISCORD_GUILD` - This is where the Discord GUILD will be stored
 3. `RIOT_TOKEN` - This is where the Riot API token will be stored  
 
-You will need to create this file yourself and paste your own tokens.
+You will need to create this file yourself (in root) and paste your own tokens.
 
 
 ## **Code Style Guide**
