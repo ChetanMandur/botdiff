@@ -8,9 +8,10 @@ from functions.test import test_command
 
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
-GUILD = os.getenv("DISCORD_GUILD")
+KRIS_TOKEN = os.getenv("KRISTESTBOT_TOKEN")
+# GUILD = os.getenv("DISCORD_GUILD")
 
-bot = commands.Bot(command_prefix=">>")
+bot = commands.Bot(command_prefix="!")
 
 
 @bot.command()
@@ -19,4 +20,4 @@ async def test(ctx):
 
 
 print("running!")
-bot.run(TOKEN)
+bot.run(KRIS_TOKEN)

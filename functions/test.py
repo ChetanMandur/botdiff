@@ -1,2 +1,2 @@
 def test_command():
-    return "hello world!"
+    return "what's good fobs"

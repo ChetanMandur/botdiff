@@ -8,5 +8,6 @@
           "source.organizeImports": true
       }
     },
+    "python.pythonPath": "env/bin/python",
     
   }
