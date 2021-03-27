@@ -63,7 +63,7 @@ Use `snake_case`! :)
 1. `git checkout -b "<branch name>"` - Creates a branch from your current branch
 2. `git status` - Checks the status of changes
 3. `git add .` - Adds all changes/files
-4. `git commit -m "<Message>"` - Creates a commit 
+4. `git commit -m "<Message>"` - Creates a commit (OR `git commit` to open vim like a l33t chad :3)
 5. `git push` - Pushes the branch to GitHub
 
 ### **Rebasing:**
