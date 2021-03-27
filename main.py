@@ -17,8 +17,8 @@ bot = commands.Bot(command_prefix=">>")
 
 
 @bot.command()
-async def test(ctx, ext=None):
-    await ctx.send(test_command(ctx, ext, lol_watcher))
+async def test(ctx, ext=None, sum_name=None):
+    await ctx.send(test_command(ctx, ext, lol_watcher, sum_name))
 
 
 print("running!")
