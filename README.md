@@ -26,7 +26,7 @@ With this project, API tokens are needed to communicate with both Discord API an
 To handle these tokens, we store the files in a `.env` file (is coved by .gitignore).
 Here are the token names we use: 
 1. `DISCORD_TOKEN` - This is where the Discord API token will be stored
-2. `DISCORD_GUILD` - This is where the Discord GUILD will be stored
+2. ~~`DISCORD_GUILD` - This is where the Discord GUILD will be stored~~ **(ATM This is not used, can be ignored)**
 3. `RIOT_TOKEN` - This is where the Riot API token will be stored  
 
 You will need to create this file yourself (in root) and paste your own tokens.
