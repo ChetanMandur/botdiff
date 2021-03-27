@@ -1,4 +1,4 @@
-def test_command(ctx, ext, lol_watcher):
+def test_command(ctx, ext, lol_watcher, sum_name):
     if ext == None:
         return "hello world!"
 
@@ -24,5 +24,8 @@ this isnt blue :3"""
         return ":scream: AHHHHHHHHHHH"
 
     if ext == "lolsum":
-        my_user = lol_watcher.summoner.by_name("na1", "HideOnTurban")
-        return f"{my_user['name']} is level {my_user['summonerLevel']} "
+        if sum_name != None:
+            my_user = lol_watcher.summoner.by_name("na1", str(sum_name))
+            return f"{my_user['name']} is level {my_user['summonerLevel']} "
+        else:
+            return "provide a username to search :blush:"
