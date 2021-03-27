@@ -14,8 +14,8 @@ bot = commands.Bot(command_prefix=">>")
 
 
 @bot.command()
-async def test(ctx):
-    await ctx.send(test_command())
+async def test(ctx, ext=None):
+    await ctx.send(test_command(ctx, ext))
 
 
 print("running!")
