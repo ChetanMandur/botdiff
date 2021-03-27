@@ -1,4 +1,4 @@
-def test_command(ctx, ext):
+def test_command(ctx, ext, lol_watcher):
     if ext == None:
         return "hello world!"
 
@@ -22,3 +22,7 @@ this isnt blue :3"""
 
     if ext == "emoji":
         return ":scream: AHHHHHHHHHHH"
+
+    if ext == "lolsum":
+        my_user = lol_watcher.summoner.by_name("na1", "HideOnTurban")
+        return f"{my_user['name']} is level {my_user['summonerLevel']} "
