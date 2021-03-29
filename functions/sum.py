@@ -15,26 +15,24 @@ def sum_command(lol_watcher, ctx, sum_name, ext):
 
     else:
         switcher = {
-            "level": level,
-            "id": id,
-            "rankedstat": rankedstat,
+            "level": lambda: level(user),
+            "id": lambda: id(user),
+            "rankedstat": lambda: rankedstat(lol_watcher, user),
         }
-        return switcher.get(ext, lambda: "Invalid arg")(
-            lol_watcher, ctx, sum_name, ext, user
-        )
+        return switcher.get(ext, lambda: "Invalid arg")()
 
 
-def level(lol_watcher, ctx, sum_name, ext, user):
+def level(user):
     return f"This user is level {user['summonerLevel']}"
 
 
-def id(lol_watcher, ctx, sum_name, ext, user):
+def id(user):
     return f"""> **Username:** {user['name']}
     > **ID:** {user['id']}
     > **Account ID:** {user['accountId']}  """
 
 
-def rankedstat(lol_watcher, ctx, sum_name, ext, user):
+def rankedstat(lol_watcher, user):
     ranked_stat = lol_watcher.league.by_summoner("na1", user["id"])[0]
 
     tier = ranked_stat["tier"]
