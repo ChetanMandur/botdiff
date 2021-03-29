@@ -4,26 +4,26 @@ def test_command(ctx, ext, lol_watcher, sum_name):
 
     else:
         switcher = {
-            "saymyname": saymyname,
-            "bold": bold,
-            "block": block,
-            "colour": colour,
-            "emoji": emoji,
-            "lolsum": lolsum,
+            "saymyname": lambda: saymyname(ctx),
+            "bold": lambda: bold(),
+            "block": lambda: block(),
+            "colour": lambda: colour(),
+            "emoji": lambda: emoji(),
+            "lolsum": lambda: lolsum(lol_watcher, sum_name),
         }
-        return switcher.get(ext, lambda: "Invalid arg")(ctx, ext, lol_watcher, sum_name)
+        return switcher.get(ext, lambda: "Invalid arg")()
 
 
-def saymyname(ctx, ext, lol_watcher, sum_name):
+def saymyname(ctx):
     name = str(ctx.author).split("#")[0]
     return f"{name}"
 
 
-def bold(ctx, ext, lol_watcher, sum_name):
+def bold():
     return "**hello world!**"
 
 
-def block(ctx, ext, lol_watcher, sum_name):
+def block():
     return """> This is hopefully a block
     > hello world!
     > **ok goodbye**
@@ -31,16 +31,16 @@ def block(ctx, ext, lol_watcher, sum_name):
     > ok fr goodbye"""
 
 
-def colour(ctx, ext, lol_watcher, sum_name):
+def colour():
     return """ ```ini\n[please be blue]```
 this isnt blue :3"""
 
 
-def emoji(ctx, ext, lol_watcher, sum_name):
+def emoji():
     return ":scream: AHHHHHHHHHHH"
 
 
-def lolsum(ctx, ext, lol_watcher, sum_name):
+def lolsum(lol_watcher, sum_name):
     if sum_name != None:
         my_user = lol_watcher.summoner.by_name("na1", str(sum_name))
         return f"{my_user['name']} is level {my_user['summonerLevel']} "
