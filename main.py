@@ -7,6 +7,7 @@ from requests.exceptions import HTTPError
 from riotwatcher import ApiError, LolWatcher
 
 import helpers.riot_helper as riot_helper
+from functions.runes import runes_command
 from functions.sum import sum_command
 from functions.test import test_command
 
@@ -30,6 +31,11 @@ async def sum(ctx, sum_name=None, ext=None):
         await ctx.send(sum_command(lol_watcher, ctx, sum_name, ext))
     except HTTPError as e:
         await ctx.send(riot_helper.error_handling(e))
+
+
+@bot.command()
+async def runes(ctx, sum_name=None):
+    await ctx.send(runes_command(ctx, sum_name))
 
 
 print("running!")
