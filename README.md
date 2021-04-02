@@ -26,10 +26,10 @@ With this project, API tokens are needed to communicate with both Discord API an
 To handle these tokens, we store the files in a `.env` file (is coved by .gitignore).
 Here are the token names we use: 
 1. `DISCORD_TOKEN` - This is where the Discord API token will be stored
-2. `DISCORD_GUILD` - This is where the Discord GUILD will be stored
+2. ~~`DISCORD_GUILD` - This is where the Discord GUILD will be stored~~ **(ATM This is not used, can be ignored)**
 3. `RIOT_TOKEN` - This is where the Riot API token will be stored  
 
-You will need to create this file yourself and paste your own tokens.
+You will need to create this file yourself (in root) and paste your own tokens.
 
 
 ## **Code Style Guide**
@@ -63,7 +63,7 @@ Use `snake_case`! :)
 1. `git checkout -b "<branch name>"` - Creates a branch from your current branch
 2. `git status` - Checks the status of changes
 3. `git add .` - Adds all changes/files
-4. `git commit -m "<Message>"` - Creates a commit 
+4. `git commit -m "<Message>"` - Creates a commit (OR `git commit` to open vim like a l33t chad :3)
 5. `git push` - Pushes the branch to GitHub
 
 ### **Rebasing:**
