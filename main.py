@@ -3,8 +3,10 @@ import os
 import discord
 from discord.ext import commands
 from dotenv import load_dotenv
+from requests.exceptions import HTTPError
 from riotwatcher import ApiError, LolWatcher
 
+import helpers.riot_helper as riot_helper
 from functions.sum import sum_command
 from functions.test import test_command
 
@@ -24,7 +26,10 @@ async def test(ctx, ext=None, sum_name=None):
 
 @bot.command()
 async def sum(ctx, sum_name=None, ext=None):
-    await ctx.send(sum_command(lol_watcher, ctx, sum_name, ext))
+    try:
+        await ctx.send(sum_command(lol_watcher, ctx, sum_name, ext))
+    except HTTPError as e:
+        await ctx.send(riot_helper.error_handling(e))
 
 
 print("running!")
