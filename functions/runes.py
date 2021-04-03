@@ -1,9 +1,15 @@
 from urllib.request import urlopen
 
+import discord
 from bs4 import BeautifulSoup
 
+discord_bot = None
 
-def runes_command(champ_name, role, num):
+
+def runes_command(bot, champ_name, role, num):
+    global discord_bot
+    discord_bot = bot
+
     if num != None:
         try:
             num = int(num)
@@ -11,9 +17,17 @@ def runes_command(champ_name, role, num):
         except Exception:
             return "The page number must be a digit"
 
-    if champ_name == None or role == None:
+    if champ_name == None:
         return f"""> **Usage**
         > `sum <Champ Name> <Role> <(Optional) Page Number>` """
+
+    elif role == None:
+        return f"""You need to provide a role. Possible options are:
+  - 'top'
+  - 'mid'
+  - 'bot'/'adc'
+  - 'support'
+  - 'jungle'"""
 
     elif isinstance(num, int) and num > 5:
         return "Please pick a number between 1-5"
@@ -71,18 +85,48 @@ def runes_scrape(champ_name, role, num):
 
 def runes_pretty(main_tree, sec_tree, extra_tree, type_names):
     try:
-        return f"""> **{type_names[0]}**
-        > {main_tree[0]}
-        > {main_tree[1]}
-        > {main_tree[2]}
-        > {main_tree[3]}
-        > **{type_names[1]}**
-        > {sec_tree[0]}
-        > {sec_tree[1]}
-        > **Extras**
-        > {extra_tree[0][0]} {extra_tree[0][1]}
-        > {extra_tree[1][0]} {extra_tree[1][1]}
-        > {extra_tree[2][0]} {extra_tree[2][1]}"""
+        return f"""> **{runes_emoji(type_names[0])}**
+        > {runes_emoji(main_tree[0])} 
+        > {runes_emoji(main_tree[1])}
+        > {runes_emoji(main_tree[2])}
+        > {runes_emoji(main_tree[3])}
+        > 
+        > **{runes_emoji(type_names[1])}**
+        > {runes_emoji(sec_tree[0])}
+        > {runes_emoji(sec_tree[1])}
+        > 
+        > **Shards**
+        > {shards_emoji(extra_tree[0][1])} {extra_tree[0][0]} {extra_tree[0][1]}
+        > {shards_emoji(extra_tree[1][1])} {extra_tree[1][0]} {extra_tree[1][1]}
+        > {shards_emoji(extra_tree[2][1])} {extra_tree[2][0]} {extra_tree[2][1]}"""
 
     except IndexError:
         return "No runes found"
+
+
+def runes_emoji(name):
+    global discord_bot
+    emoji_name = "Rune_" + name
+    emoji_name = emoji_name.replace(" ", "_")
+    emoji_name = emoji_name.replace(":", "")
+    emoji = discord.utils.get(discord_bot.emojis, name=emoji_name)
+    if emoji != None:
+        return f"{emoji} {name}"
+    else:
+        return f"{name}"
+
+
+def shards_emoji(name):
+    emoji_key_list = {
+        "+9 Adaptive Force": "diamond",
+        "+10% Attack Speed": "axe",
+        "+8 Ability Haste": "time",
+        "+6 Armor": "shield",
+        "+8 Magic Resist": "circle",
+        "+15-90 Health (based on level)": "heart",
+    }
+
+    emoji_name = emoji_key_list.get(name)
+    emoji = discord.utils.get(discord_bot.emojis, name=emoji_name)
+
+    return f"{emoji}"
