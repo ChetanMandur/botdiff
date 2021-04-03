@@ -4,11 +4,16 @@ import discord
 from bs4 import BeautifulSoup
 
 discord_bot = None
+champ_searched = None
+role_searched = None
+list_of_roles = ["top", "mid", "bot", "adc", "support", "jungle", "aram", "urf"]
 
 
 def runes_command(bot, champ_name, role, num):
-    global discord_bot
+    global discord_bot, champ_searched, role_searched, list_of_roles
     discord_bot = bot
+    champ_searched = champ_name
+    role_searched = role
 
     if num != None:
         try:
@@ -21,28 +26,39 @@ def runes_command(bot, champ_name, role, num):
         return f"""> **Usage**
         > `sum <Champ Name> <Role> <(Optional) Page Number>` """
 
-    elif role == None:
+    elif role == None or role not in list_of_roles:
         return f"""You need to provide a role. Possible options are:
   - 'top'
   - 'mid'
   - 'bot'/'adc'
   - 'support'
-  - 'jungle'"""
+  - 'jungle'
+  - 'aram'
+  - 'urf'"""
 
     elif isinstance(num, int) and num > 5:
         return "Please pick a number between 1-5"
 
     else:
+        if role.lower() == "aram":
+            runes_page = f"https://na.op.gg/aram/{champ_name}/statistics/450/rune"
+
+        elif role.lower() == "urf":
+            runes_page = f"https://na.op.gg/urf/{champ_name}/statistics/900/rune"
+
+        else:
+            runes_page = (
+                f"https://na.op.gg/champion/{champ_name}/statistics/{role}/rune"
+            )
+
         if num == None:
-            return runes_scrape(champ_name, role, 1)
+            return runes_scrape(runes_page, 1)
 
-        elif isinstance(num, int):
-            return runes_scrape(champ_name, role, num)
+        else:
+            return runes_scrape(runes_page, num)
 
 
-def runes_scrape(champ_name, role, num):
-    runes_page = f"https://na.op.gg/champion/{champ_name}/statistics/{role}/rune"
-
+def runes_scrape(runes_page, num):
     html = urlopen(runes_page)
     soup = BeautifulSoup(html, features="html.parser")
 
@@ -84,8 +100,10 @@ def runes_scrape(champ_name, role, num):
 
 
 def runes_pretty(main_tree, sec_tree, extra_tree, type_names):
+    global champ_searched, role_searched
     try:
-        return f"""> **{runes_emoji(type_names[0])}**
+        return f"""> __**{champ_searched.upper()} ({role_searched.upper()})**__
+        > **{runes_emoji(type_names[0])}**
         > {runes_emoji(main_tree[0])} 
         > {runes_emoji(main_tree[1])}
         > {runes_emoji(main_tree[2])}
