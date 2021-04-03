@@ -34,8 +34,8 @@ async def sum(ctx, sum_name=None, ext=None):
 
 
 @bot.command()
-async def runes(ctx, sum_name=None):
-    await ctx.send(runes_command(ctx, sum_name))
+async def runes(ctx, champ_name=None, role=None, num=None):
+    await ctx.send(runes_command(champ_name, role, num))
 
 
 print("running!")
