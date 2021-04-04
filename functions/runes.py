@@ -1,11 +1,9 @@
 from urllib.request import urlopen
-
 import discord
 from bs4 import BeautifulSoup
+from data_structures.rune_page import RunePage
 
 discord_bot = None
-champ_searched = None
-role_searched = None
 
 basic_page = "https://na.op.gg/{}/{}/statistics/{}/rune"
 aram_ver = 450
@@ -13,10 +11,8 @@ urf_ver = 900
 
 
 def runes_command(bot, champ_name, role, num):
-    global discord_bot, champ_searched, role_searched, basic_page, aram_ver, urf_ver
+    global discord_bot, basic_page, aram_ver, urf_ver
     discord_bot = bot
-    champ_searched = champ_name
-    role_searched = role
 
     if num != None:
         try:
@@ -38,23 +34,20 @@ def runes_command(bot, champ_name, role, num):
             runes_page = basic_page.format("champion", champ_name, role)
 
         if num == None:
-            return runes_scrape(runes_page, 1)
+            return runes_scrape(runes_page, 1, champ_name, role)
 
         else:
-            return runes_scrape(runes_page, num)
+            return runes_scrape(runes_page, num, champ_name, role)
 
     else:
         return check
 
 
-def runes_scrape(runes_page, num):
+def runes_scrape(runes_page, num, champ_name, role):
     html = urlopen(runes_page)
     soup = BeautifulSoup(html, features="html.parser")
 
-    main_tree = []
-    sec_tree = []
-    shards_tree = []
-    type_names = []
+    runes = RunePage(champ_name, role)
 
     # Grabs the main tbody which houses the runes rows
     main_tbody = soup.find("div", class_="tabItem ChampionKeystoneRune-1").findChild(
@@ -72,7 +65,7 @@ def runes_scrape(runes_page, num):
             ):
                 title = perk_tree_type.findChild().get("title")
                 type_name = title[title.find("'>") + 2 : title.find("</b>")]
-                type_names.append(type_name)
+                runes.type_names.append(type_name)
 
             # Looks through all the runes, and grabs all the active/used runes
             for perk_active in perk_trees.find_all("div"):
@@ -80,10 +73,10 @@ def runes_scrape(runes_page, num):
                     rune_name = perk_active.findChild().findChild().get("alt")
 
                     # After the first 4 runes have been found, the rest must be part of secondary tree
-                    if len(main_tree) != 4:
-                        main_tree.append(rune_name)
+                    if len(runes.main_tree) != 4:
+                        runes.main_tree.append(rune_name)
                     else:
-                        sec_tree.append(rune_name)
+                        runes.sec_tree.append(rune_name)
 
         # Grabs the fragments/shards page
         for shards_list in tr.find_all("div", class_="fragment-page"):
@@ -96,29 +89,28 @@ def runes_scrape(runes_page, num):
                         title.find("<span>") + 6 : title.find("</span>")
                     ]
                     shard_name = shard.get("alt")
-                    shards_tree.append([shard_name, shard_description])
+                    runes.shards_tree.append([shard_name, shard_description])
 
-    return runes_pretty(main_tree, sec_tree, shards_tree, type_names)
+    return runes_pretty(runes)
 
 
-def runes_pretty(main_tree, sec_tree, shards_tree, type_names):
-    global champ_searched, role_searched
+def runes_pretty(runes):
     try:
-        return f"""> __**{champ_searched.upper()} ({role_searched.upper()})**__
-        > **{runes_emoji(type_names[0])}**
-        > {runes_emoji(main_tree[0])} 
-        > {runes_emoji(main_tree[1])}
-        > {runes_emoji(main_tree[2])}
-        > {runes_emoji(main_tree[3])}
+        return f"""> __**{runes.champ_searched.upper()} ({runes.role_searched.upper()})**__
+        > **{runes_emoji(runes.type_names[0])}**
+        > {runes_emoji(runes.main_tree[0])} 
+        > {runes_emoji(runes.main_tree[1])}
+        > {runes_emoji(runes.main_tree[2])}
+        > {runes_emoji(runes.main_tree[3])}
         > 
-        > **{runes_emoji(type_names[1])}**
-        > {runes_emoji(sec_tree[0])}
-        > {runes_emoji(sec_tree[1])}
+        > **{runes_emoji(runes.type_names[1])}**
+        > {runes_emoji(runes.sec_tree[0])}
+        > {runes_emoji(runes.sec_tree[1])}
         > 
         > **Shards**
-        > {shards_emoji(shards_tree[0])}
-        > {shards_emoji(shards_tree[1])}
-        > {shards_emoji(shards_tree[2])}"""
+        > {shards_emoji(runes.shards_tree[0])}
+        > {shards_emoji(runes.shards_tree[1])}
+        > {shards_emoji(runes.shards_tree[2])}"""
 
     except IndexError:
         return "No runes found"
