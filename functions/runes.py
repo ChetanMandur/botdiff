@@ -18,6 +18,13 @@ def runes_command(bot, champ_name, role, num):
     champ_searched = champ_name
     role_searched = role
 
+    if num != None:
+        try:
+            num = int(num)
+
+        except Exception:
+            return "The page number must be a digit"
+
     check = runes_check_input(champ_name, role, num)
 
     if check == True:
@@ -151,14 +158,7 @@ def shards_emoji(shard):
 def runes_check_input(champ_name, role, num):
     list_of_roles = ["top", "mid", "bot", "adc", "support", "jungle", "aram", "urf"]
 
-    if num != None:
-        try:
-            num = int(num)
-
-        except Exception:
-            return "The page number must be a digit"
-
-    elif champ_name == None:
+    if champ_name == None:
         return f"""> **Usage**
         > `sum <Champ Name> <Role> <(Optional) Page Number>` """
 
