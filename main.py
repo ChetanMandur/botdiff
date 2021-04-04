@@ -49,5 +49,10 @@ async def top(ctx, sum_name=None, ext=None):
     await ctx.send(topchampions_command(ctx, sum_name, ext))
 
 
+@bot.command()
+async def top(ctx, sum_name=None, ext=None):
+    await ctx.send(topchampions_command(ctx, sum_name, ext))
+
+
 print("running!")
 bot.run(TOKEN)
