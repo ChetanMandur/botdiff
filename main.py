@@ -11,6 +11,7 @@ from functions.builds import builds_command
 from functions.runes import runes_command
 from functions.sum import sum_command
 from functions.test import test_command
+from functions.topchampions import topchampions_command
 
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
@@ -42,6 +43,10 @@ async def runes(ctx, champ_name=None, role=None, num=None):
 @bot.command()
 async def builds(ctx, champ_name=None, role=None):
     await ctx.send(builds_command(champ_name, role))
+
+@bot.command()
+async def top(ctx, sum_name=None, ext=None):
+    await ctx.send(topchampions_command(ctx, sum_name, ext))
 
 
 print("running!")
