@@ -49,44 +49,47 @@ def runes_scrape(runes_page, num):
     shards_tree = []
     type_names = []
 
-    # Grabs the body that contains all rune builds
-    for tbody in soup.find_all("tbody"):
-        # Grabs the specified row/rune build
-        for tr in tbody.find_all("tr")[num - 1 : num]:
-            # Parses through the two tree paths
-            for perk_trees in tr.find_all("div", class_="perk-page"):
+    # Grabs the main tbody which houses the runes rows
+    main_tbody = soup.find("div", class_="tabItem ChampionKeystoneRune-1").findChild(
+        "tbody"
+    )
 
-                # Grabs the name of the path
-                for perk_tree_type in perk_trees.find_all(
-                    "div", class_="perk-page__item perk-page__item--mark"
-                ):
-                    title = perk_tree_type.findChild().get("title")
-                    type_name = title[title.find("'>") + 2 : title.find("</b>")]
-                    type_names.append(type_name)
+    # Goes through each row in the
+    for tr in main_tbody.find_all("tr")[num - 1 : num]:
+        # Parses through the two tree paths
+        for perk_trees in tr.find_all("div", class_="perk-page"):
 
-                # Looks through all the runes, and grabs all the active/used runes
-                for perk_active in perk_trees.find_all("div"):
-                    if "perk-page__item--active" in perk_active["class"]:
-                        rune_name = perk_active.findChild().findChild().get("alt")
+            # Grabs the name of the path
+            for perk_tree_type in perk_trees.find_all(
+                "div", class_="perk-page__item perk-page__item--mark"
+            ):
+                title = perk_tree_type.findChild().get("title")
+                type_name = title[title.find("'>") + 2 : title.find("</b>")]
+                type_names.append(type_name)
 
-                        # After the first 4 runes have been found, the rest must be part of secondary tree
-                        if len(main_tree) != 4:
-                            main_tree.append(rune_name)
-                        else:
-                            sec_tree.append(rune_name)
+            # Looks through all the runes, and grabs all the active/used runes
+            for perk_active in perk_trees.find_all("div"):
+                if "perk-page__item--active" in perk_active["class"]:
+                    rune_name = perk_active.findChild().findChild().get("alt")
 
-            # Grabs the fragments/shards page
-            for extras_list in tr.find_all("div", class_="fragment-page"):
-                # Grabs all the individual images within the page
-                for extra in extras_list.find_all("img"):
-                    # Grabs all active/used fragments/shards
-                    if "active" in extra["class"][0]:
-                        title = extra.get("title")
-                        extra_description = title[
-                            title.find("<span>") + 6 : title.find("</span>")
-                        ]
-                        extra_name = extra.get("alt")
-                        shards_tree.append([extra_name, extra_description])
+                    # After the first 4 runes have been found, the rest must be part of secondary tree
+                    if len(main_tree) != 4:
+                        main_tree.append(rune_name)
+                    else:
+                        sec_tree.append(rune_name)
+
+        # Grabs the fragments/shards page
+        for shards_list in tr.find_all("div", class_="fragment-page"):
+            # Grabs all the individual images within the page
+            for shard in shards_list.find_all("img"):
+                # Grabs all active/used fragments/shards
+                if "active" in shard["class"][0]:
+                    title = shard.get("title")
+                    shard_description = title[
+                        title.find("<span>") + 6 : title.find("</span>")
+                    ]
+                    shard_name = shard.get("alt")
+                    shards_tree.append([shard_name, shard_description])
 
     return runes_pretty(main_tree, sec_tree, shards_tree, type_names)
 
