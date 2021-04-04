@@ -91,61 +91,7 @@ def runes_scrape(runes_page, num, champ_name, role):
                     shard_name = shard.get("alt")
                     runes.shards_tree.append([shard_name, shard_description])
 
-    return runes_pretty(runes)
-
-
-def runes_pretty(runes):
-    try:
-        return f"""> __**{runes.champ_searched.upper()} ({runes.role_searched.upper()})**__
-        > **{runes_emoji(runes.type_names[0])}**
-        > {runes_emoji(runes.main_tree[0])} 
-        > {runes_emoji(runes.main_tree[1])}
-        > {runes_emoji(runes.main_tree[2])}
-        > {runes_emoji(runes.main_tree[3])}
-        > 
-        > **{runes_emoji(runes.type_names[1])}**
-        > {runes_emoji(runes.sec_tree[0])}
-        > {runes_emoji(runes.sec_tree[1])}
-        > 
-        > **Shards**
-        > {shards_emoji(runes.shards_tree[0])}
-        > {shards_emoji(runes.shards_tree[1])}
-        > {shards_emoji(runes.shards_tree[2])}"""
-
-    except IndexError:
-        return "No runes found"
-
-
-def runes_emoji(name):
-    global discord_bot
-    emoji_name = "Rune_" + name
-    emoji_name = emoji_name.replace(" ", "_")
-    emoji_name = emoji_name.replace(":", "")
-    emoji_name = emoji_name.replace("'", "")
-    emoji = discord.utils.get(discord_bot.emojis, name=emoji_name)
-    if emoji != None:
-        return f"{emoji} {name}"
-    else:
-        return f"{name}"
-
-
-def shards_emoji(shard):
-    emoji_key_list = {
-        "+9 Adaptive Force": "diamond",
-        "+10% Attack Speed": "axe",
-        "+8 Ability Haste": "time",
-        "+6 Armor": "shield",
-        "+8 Magic Resist": "circle",
-        "+15-90 Health (based on level)": "heart",
-    }
-    shard_type = shard[0]
-    shard_name = shard[1]
-
-    emoji_name = emoji_key_list.get(shard_name)
-    emoji = discord.utils.get(discord_bot.emojis, name=emoji_name)
-
-    return f"{emoji} {shard_type} {shard_name}"
-
+    return runes.pretty_print(discord_bot)
 
 def runes_check_input(champ_name, role, num):
     list_of_roles = ["top", "mid", "bot", "adc", "support", "jungle", "aram", "urf"]
