@@ -1,4 +1,5 @@
 from urllib.request import urlopen
+
 import discord
 from bs4 import BeautifulSoup
 from data_structures.rune_page import RunePage
@@ -10,9 +11,8 @@ aram_ver = 450
 urf_ver = 900
 
 
-def runes_command(bot, champ_name, role, num):
-    global discord_bot, basic_page, aram_ver, urf_ver
-    discord_bot = bot
+def runes_command(discord_bot, champ_name, role, num):
+    global basic_page, aram_ver, urf_ver
 
     if num != None:
         try:
@@ -34,16 +34,16 @@ def runes_command(bot, champ_name, role, num):
             runes_page = basic_page.format("champion", champ_name, role)
 
         if num == None:
-            return runes_scrape(runes_page, 1, champ_name, role)
+            return runes_scrape(runes_page, 1, champ_name, role, discord_bot)
 
         else:
-            return runes_scrape(runes_page, num, champ_name, role)
+            return runes_scrape(runes_page, num, champ_name, role, discord_bot)
 
     else:
         return check
 
 
-def runes_scrape(runes_page, num, champ_name, role):
+def runes_scrape(runes_page, num, champ_name, role, discord_bot):
     html = urlopen(runes_page)
     soup = BeautifulSoup(html, features="html.parser")
 
@@ -92,6 +92,7 @@ def runes_scrape(runes_page, num, champ_name, role):
                     runes.shards_tree.append([shard_name, shard_description])
 
     return runes.pretty_print(discord_bot)
+
 
 def runes_check_input(champ_name, role, num):
     list_of_roles = ["top", "mid", "bot", "adc", "support", "jungle", "aram", "urf"]
