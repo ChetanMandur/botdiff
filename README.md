@@ -54,7 +54,8 @@ async def <name>(ctx):
 4. Test the function/bot by running `python3 main.py`
 
 ### **Other Notes**
-Use `snake_case`! :) 
+1. Use `snake_case` for variables and function names
+2. Use `PascalCase` for class names
 
 
 ## **Common Git Commands:**
