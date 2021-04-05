@@ -7,6 +7,7 @@ from requests.exceptions import HTTPError
 from riotwatcher import ApiError, LolWatcher
 
 import helpers.riot_helper as riot_helper
+from functions.builds import builds_command
 from functions.runes import runes_command
 from functions.sum import sum_command
 from functions.test import test_command
@@ -36,6 +37,11 @@ async def sum(ctx, sum_name=None, ext=None):
 @bot.command()
 async def runes(ctx, champ_name=None, role=None, num=None):
     await ctx.send(runes_command(bot, champ_name, role, num))
+
+
+@bot.command()
+async def builds(ctx, champ_name=None, role=None):
+    await ctx.send(builds_command(champ_name, role))
 
 
 print("running!")
