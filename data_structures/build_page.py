@@ -35,7 +35,9 @@ class BuildPage:
 
     def pretty_core_build(self):
         if not self.core_build:
-            return "> This champ and role combo does not have a determined starting build  :("
+            return (
+                "> This champ and role combo does not have a determined core build  :("
+            )
 
         else:
             return self.pretty_item_list(self.core_build)
