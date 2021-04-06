@@ -34,6 +34,8 @@ def builds_scrape(builds_page, champ_name, role):
     build = BuildPage(champ_name, role)
 
     ##MAIN ITEMS
+
+    # The main div which contains all main item info (starter/core/boot items)
     main_items_div = soup.find("div", class_="l-champion-statistics-content__main")
 
     current_box = 0
@@ -49,6 +51,8 @@ def builds_scrape(builds_page, champ_name, role):
         switcher.get(current_box, lambda: "Invalid arg")()
 
     ##EXTRA ITEMS
+
+    # The main tbody which stores all the extra items
     extra_items_tbody = soup.find(
         "div", class_="l-champion-statistics-content__side"
     ).find("tbody")
@@ -58,8 +62,10 @@ def builds_scrape(builds_page, champ_name, role):
     return build.pretty_print()
 
 
+# Scrapes items that are displayed in a row
 def item_row_scrape(champ_box):
     try:
+        # Grabs the list of items
         main_ul = champ_box.find(
             "td",
             class_="champion-stats__table__cell champion-stats__table__cell--data",
@@ -67,6 +73,7 @@ def item_row_scrape(champ_box):
 
         item_list = []
 
+        # Grabs each individual items and records its name/cost
         for li in main_ul.find_all("li", class_="champion-stats__list__item tip"):
             title = li.get("title")
             item_name = title[title.find("'>") + 2 : title.find("</b>")]
@@ -80,7 +87,9 @@ def item_row_scrape(champ_box):
         return []
 
 
+# Scrapes items that are displayed by themselves
 def single_item_scrape(champ_box):
+    # Grabs the single item
     main_img = (
         champ_box.find(
             "td",
