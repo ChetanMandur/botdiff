@@ -1,5 +1,6 @@
 import discord
 
+
 class RunePage:
     def __init__(self, champ, role):
         self.champ_searched = champ
@@ -13,22 +14,32 @@ class RunePage:
         try:
             return f"""> __**{self.champ_searched.upper()} ({self.role_searched.upper()})**__
                 > **{self.runes_emoji(self.type_names[0], bot)}**
-                > {self.runes_emoji(self.main_tree[0], bot)} 
-                > {self.runes_emoji(self.main_tree[1], bot)}
-                > {self.runes_emoji(self.main_tree[2], bot)}
-                > {self.runes_emoji(self.main_tree[3], bot)}
+                {self.pretty_tree_print(self.main_tree,bot, True)}
                 > 
                 > **{self.runes_emoji(self.type_names[1], bot)}**
-                > {self.runes_emoji(self.sec_tree[0], bot)}
-                > {self.runes_emoji(self.sec_tree[1], bot)}
+                {self.pretty_tree_print(self.sec_tree,bot, True)}
                 > 
                 > **Shards**
-                > {self.shards_emoji(self.shards_tree[0], bot)}
-                > {self.shards_emoji(self.shards_tree[1], bot)}
-                > {self.shards_emoji(self.shards_tree[2], bot)}"""
+                {self.pretty_tree_print(self.shards_tree,bot, False)}"""
 
         except IndexError:
             return "No runes found"
+
+    def pretty_tree_print(self, tree_list, bot, rune_tree):
+        output = ""
+        item_count = 0
+        for item in tree_list:
+            if item_count > 0:
+                output = output + "\n"
+            if rune_tree:
+                new_item = f"> {self.runes_emoji(item,bot)}"
+                output = output + new_item
+            else:
+                new_item = f"> {self.shards_emoji(item,bot)}"
+                output = output + new_item
+            item_count += 1
+
+        return output
 
     def runes_emoji(self, name, discord_bot):
         emoji_name = "Rune_" + name
@@ -40,7 +51,7 @@ class RunePage:
             return f"{emoji} {name}"
         else:
             return f"{name}"
-    
+
     def shards_emoji(self, shard, discord_bot):
         emoji_key_list = {
             "+9 Adaptive Force": "diamond",
