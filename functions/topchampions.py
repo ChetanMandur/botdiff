@@ -1,50 +1,79 @@
+from re import findall
+from urllib.request import urlopen, urlretrieve
+
 import requests
 from bs4 import BeautifulSoup
-from helpers.selectors import OVERVIEW_QUEUE_BUTTON, OVERVIEW_STATS, OVERVIEW_TABLE
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
+from bs4.builder import HTML
+
+basic_page = "https://na.op.gg/summoner/userName={}"
+basic_champions_page = "https://na.op.gg/summoner/champions/ajax/champions.most/summonerId={}&season={}&queueType={}&"
+queueType = {"all": "all", "solo": "soloranked", "flex": "flexranked5v5"}
 
 
-def topchampions_command(sum_name, queue, num):
-    topChampions = []
-    options = Options()
-    options.add_argument("--headless")
-    options.add_argument("--disable-gpu")
-    driver = webdriver.Chrome(
-        "D:\chromedriver_win32 (3)\chromedriver.exe", chrome_options=options
-    )
-    driver.get(f"https://na.op.gg/summoner/userName={sum_name}")
+def topchampions_command(sum_name, queue):
+    url = basic_page.format(sum_name)
+    page = requests.get(url)
+    soup = BeautifulSoup(page.content, "html.parser")
+    top_champions = []
 
-    driver.find_element(By.CSS_SELECTOR, OVERVIEW_QUEUE_BUTTON[queue]).click()
+    if queue == "all":
+        top_champions = get_all_data(soup)
+    elif queue == "solo" or queue == "flex":
+        top_champions = get_ranked_data(soup, queue)
+    else:
+        return "Invalid Input"
 
-    table = driver.find_element_by_css_selector(OVERVIEW_TABLE[queue])
-    rows = table.find_elements(By.CLASS_NAME, "ChampionBox")
+    return format_data(top_champions)
 
-    index = 1
-    for r in rows:
-        topChampions.append(
-            {
-                index: r.find_element(
-                    By.CSS_SELECTOR, OVERVIEW_STATS["name"]
-                ).text.strip(),
-                "winrate": r.find_element(
-                    By.CSS_SELECTOR, OVERVIEW_STATS["winrate"]
-                ).text.strip(),
-                "played": r.find_element(
-                    By.CSS_SELECTOR, OVERVIEW_STATS["played"]
-                ).text.strip(),
-            }
+
+def get_all_data(soup):
+    top_champions = []
+    champions = soup.find_all("div", class_="ChampionBox Ranked")
+
+    for rank, champion in enumerate(champions):
+        data = {}
+        data["rank"] = rank + 1
+        data["name"] = champion.find("div", class_="ChampionName")["title"]
+        data["winrate"] = champion.find("div", class_="WinRatio").getText().strip()
+        data["kda"] = (
+            champion.find("div", class_="KDA").getText().strip().split(":", 1)[0]
         )
-        index += 1
+        data["cs"] = champion.find("div", class_="ChampionMinionKill").getText().strip()
+        data["played"] = champion.find("div", class_="Title").getText().strip()
+        top_champions.append(data)
 
-    driver.quit()
-    return format(topChampions, num)
+    return top_champions
 
 
-def format(topChampions, num):
+def get_ranked_data(soup, queue):
+    sum_data = soup.find("div", attrs={"data-summoner-id": True})
+    sum_id = sum_data["data-summoner-id"]
+    season = sum_data["data-season"]
+
+    champions_url = basic_champions_page.format(sum_id, season, queueType[queue])
+    champions_page = requests.get(champions_url)
+    soup = BeautifulSoup(champions_page.content, "html.parser")
+
+    top_champions = []
+    champions = soup.find_all("div", class_="ChampionBox")
+
+    for rank, champion in enumerate(champions):
+        data = {}
+        data["rank"] = rank + 1
+        data["name"] = champion.find("div", class_="ChampionName")["title"]
+        data["winrate"] = champion.find("div", class_="WinRatio").getText().strip()
+        data["kda"] = (
+            champion.find("div", class_="KDA").getText().strip().split(":", 1)[0]
+        )
+        data["cs"] = champion.find("div", class_="ChampionMinionKill").getText().strip()
+        data["played"] = champion.find("div", class_="Title").getText().strip()
+        top_champions.append(data)
+
+    return top_champions
+
+
+def format_data(top_champions):
     retval = ""
-    for x in range(0, int(num)):
-        retval += f"{x+1}. {topChampions[x][x+1]} winrate {topChampions[x]['winrate']} played {topChampions[x]['winrate']}\n"
+    for champion in top_champions:
+        retval += f"{champion['rank']}. {champion['name']} winrate {champion['winrate']} played {champion['played']}\n"
     return retval
