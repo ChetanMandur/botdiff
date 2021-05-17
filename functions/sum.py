@@ -7,7 +7,7 @@ def sum_command(summoner, ext):
     basic_page = "https://na.op.gg/summoner/userName={}"
     summonerpage = basic_page.format(summoner)
     html = urlopen(summonerpage)
-    soup = BeautifulSoup(html, feature = "html.parser")
+    soup = BeautifulSoup(html,  "html.parser")
     summoner_SoloRank = soup.find("div", class_ = "TierRank")
     summoner_FlexRank = soup.find("div", class_ = "sub-tier__rank-tier")
     sum_level = soup.find("span", class_ = "Level tip tpd-delegation-uid-1")
