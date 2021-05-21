@@ -1,11 +1,11 @@
-# Riot League Bot (WIP)
+# BotDiff - A LoL Discord Bot
 
 ## **Quick Installation:**
 Make sure you have Python 3.6+ and virtualenv (`pip install virtualenv`)
 1. Clone the repo 
 2. Go into the newly cloned repo using a CLI
 3. Create a python virtual environment using `python3 -m virtualenv env`
-4. Load the virtual environment by using `source env/bin/activate` (for Windows mans, use `C:\<path_to_riotleaguebot>\env\Scripts\activate.bat`)
+4. Load the virtual environment by using `source env/bin/activate` (for Windows mans, use `C:\<path_to_botdiff>\env\Scripts\activate.bat`)
 5. Finally, install the dependencies by using `pip install -r requirements.txt`
 
 ## **Getting Tokens/Setup**
