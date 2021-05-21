@@ -7,7 +7,7 @@ def sum_command(summoner, ext):
     basic_page = "https://na.op.gg/summoner/userName={}"
     summonerpage = basic_page.format(summoner)
     html = urlopen(summonerpage)
-    soup = BeautifulSoup(html,  "html.parser")
+    soup = BeautifulSoup(html, "html.parser")
     summoner_SoloRank = soup.find("div", class_ = "TierRank")
     summoner_FlexRank = soup.find("div", class_ = "sub-tier__rank-tier")
     sum_level = soup.find("span", class_ = "Level tip tpd-delegation-uid-1")
@@ -37,8 +37,10 @@ def soloStat(summoner, rank, soup):
     solo_Losses = soup.find("span", class_ = "losses")
     solo_Points = soup.find("span", class_ = "LeaguePoints")
     solo_LeagueName = soup.find("div", class_ = "LeagueName")
-    
-    return f"""**Solo Rank** = {rank.get_text()}
+    if (rank.get_text().strip() == "Unranked"):
+        return f""" Unranked cannot find solo stats"""
+    else:
+        return f"""**Solo Rank** = {rank.get_text()}
     **League Points** = {solo_Points.get_text()}
     **League Name** = {solo_LeagueName.get_text()}
     **Wins** = {solo_Wins.get_text()}
@@ -50,7 +52,10 @@ def flexStat(summoner, rank, soup):
     flex_Winrate = soup.find("div", class_ = "sub-tier__rank-tier")
     flex_WinsLosses = soup.find("span", class_ = "sub-tier__gray-text")
     flex_Points = soup.find("div", class_ = "sub-tier__gray-text")
-    return f""" **Flex Rank** = {rank.get_text()}
+    if (rank.get_text().strip() == "Unranked"):
+        return f""" Unranked cannot find flex stats"""
+    else:
+        return f""" **Flex Rank** = {rank.get_text()}
     **Flex Points** = {flex_Points.get_text()}
     **Flex Winrate** = {flex_Winrate.get_text()}
     **Flex Wins** = {flex_WinsLosses.get_text().strip().split(' ')[1]}
