@@ -9,6 +9,7 @@ from riotwatcher import ApiError, LolWatcher
 import helpers.riot_helper as riot_helper
 from functions.builds import builds_command
 from functions.runes import runes_command
+from functions.skillbuilds import skillbuilds_command
 from functions.sum import sum_command
 from functions.test import test_command
 
@@ -42,6 +43,18 @@ async def runes(ctx, champ_name=None, role=None, num=None):
 @bot.command()
 async def builds(ctx, champ_name=None, role=None):
     await ctx.send(builds_command(champ_name, role))
+
+
+@bot.command()
+async def fullbuild(ctx, champ_name=None, role=None, num=None):
+    await ctx.send(runes_command(bot, champ_name, role, num))  # runes
+    await ctx.send(skillbuilds_command(champ_name, role))  # skillbuilds
+    await ctx.send(builds_command(champ_name, role))  # builds
+
+
+@bot.command()
+async def skillbuild(ctx, champ_name=None, role=None, num=None):
+    await ctx.send(skillbuilds_command(champ_name, role))  # skillbuilds
 
 
 print("running!")
